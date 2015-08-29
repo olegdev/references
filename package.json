@@ -1,0 +1,27 @@
+{
+  "name": "references",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/olegdev/references.git"
+  },
+  "author": "olegdev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olegdev/references/issues"
+  },
+  "homepage": "https://github.com/olegdev/references#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "cookie-parser": "^1.3.5",
+    "express": "^4.13.3",
+    "express-handlebars": "^2.0.1",
+    "winston": "^1.0.1"
+  }
+}
