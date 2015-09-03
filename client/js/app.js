@@ -19,7 +19,7 @@ Ext.onReady(function() {
 		],
 
 		controllers: [
-			//
+			'Main',
 		],
 
 		models: [

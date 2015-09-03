@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var winston = require('winston');
 var fs = require('fs');
-var Reference = require('./server/references/reference');
+var Reference = require('./server/reference');
 var controller = require('./server/controller');
 
 var port = 8082;
@@ -37,10 +37,30 @@ app.set('view engine', 'handlebars');
 
 app.get("/", function(req, res, next) {
 	if (req.query.ref) {
+		var ref = new Reference(req.query.ref);		
+		res.locals = {
+			title: 'TR :: ' + ref.config.title,
+			config: JSON.stringify({
+				references: Reference.getAllList(),
+				ref: ref.config,
+				data: ref.data,	
+			})
+		}
+		res.render('main', {layout: 'main'});		
+	} else {
+		res.writeHead(502);
+		res.send('не задан параметр ref');	
+		res.end();
+	}
+});
+
+app.post("/", function(req, res, next) {
+	if (req.query.ref) {
 		var ref = new Reference(req.query.ref);
 		if (req.query.cmd) {
-			controller.process(req.query.cmd, req.query, function(err, resp) {
+			controller.process(ref, req.query.cmd, req.body, function(err, resp) {
 				if (err) {
+					res.writeHead(502);
 					res.end(err);
 				} else {
 					res.writeHead(200, {"Content-Type": "application/json"});
@@ -48,16 +68,12 @@ app.get("/", function(req, res, next) {
 				}
 			});
 		} else {
-			res.locals = {
-				config: JSON.stringify({
-					references: [],
-					ref: ref.config,
-					data: ref.data,	
-				})
-			}
-			res.render('main', {layout: 'main'});	
+			res.writeHead(502);
+			res.send('не задан параметр cmd');	
+			res.end();
 		}
 	} else {
+		res.writeHead(502);
 		res.send('не задан параметр ref');	
 		res.end();
 	}

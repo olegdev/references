@@ -5,7 +5,7 @@ Ext.define('Refs.view.Viewport', {
 	extend: 'Ext.container.Container',
 
 	requires: [
-		'Refs.view.Grid',
+		'Refs.view.Blob',
 	],
 	
 	id: 'viewport',
@@ -31,8 +31,12 @@ Ext.define('Refs.view.Viewport', {
 
 		if (config.ref) {
 			me.items.push({
-				xtype: 'maingrid',
+				xtype: 'blob',
+				mode: 'remote',
 				flex: 1,
+				title: config.ref.title,
+				value: config.data,
+				scheme: config.ref.scheme,
 			});
 		} else {
 			me.items.push({
@@ -52,8 +56,9 @@ Ext.define('Refs.view.Viewport', {
 		config.references.forEach(function(item) {
 			buttons.push({
 				xtype: 'button',
-				text: item.name,
-				href: item.href,
+				text: item.title,
+				href: 'http://' + location.host + '?ref=' + item.name,
+				hrefTarget: '_self',
 				margin: '0 10 0 0',
 			})
 		});
