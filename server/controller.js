@@ -17,6 +17,10 @@ module.exports = {
 				ref.remove(params, callback);
 				break;
 			}
+			case 'sync': {
+				ref.syncRemote(callback);
+				break;
+			}
 			default: {
 				callback('Unknown cmd');
 			}

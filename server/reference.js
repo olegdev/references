@@ -113,4 +113,46 @@ Reference.prototype.resolveReferenceLinks = function(config) {
  	}
 }
 
+Reference.prototype.syncRemote = function(callback) {
+	var me = this,
+		dest = CONFIG.export_folder + '/' + me.name,
+
+		copyFile = function(src, dest, cb) {
+			var cbCalled = false;
+			var done = function(err) {
+	    		if (!cbCalled) {
+	      			cb(err);
+	      			cbCalled = true;
+	    		}
+	  		}
+			var rd = fs.createReadStream(src);
+	  		rd.on("error", function(err) {
+	    		done(err);
+	  		});
+	  		var wr = fs.createWriteStream(dest);
+	  		wr.on("error", function(err) {
+	    		done(err);
+	  		});
+	  		wr.on("close", function(ex) {
+	    		done();
+	  		});
+	  		rd.pipe(wr);
+		}
+
+
+	if (!fs.existsSync(dest)){
+	    fs.mkdirSync(dest);
+	}
+
+	copyFile(__dirname + '/references/' + me.name + '/' + me.name + '.config', dest + '/' + me.name + '.config', function(err) {
+		if (err) {
+			callback(err);
+		} else {
+			copyFile(__dirname + '/references/' + me.name + '/' + me.name + '.json', dest + '/' + me.name + '.json', function(err) {
+				callback(err);
+			});
+		}
+	});
+}
+
 module.exports = Reference;

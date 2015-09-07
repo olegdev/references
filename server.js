@@ -9,6 +9,9 @@ var controller = require('./server/controller');
 
 var port = 8082;
 
+// Load congig
+GLOBAL.CONFIG = JSON.parse(fs.readFileSync('config.json' , 'utf8'));
+
 //============= Create server ============
 
 var app = express();

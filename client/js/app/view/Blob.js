@@ -32,6 +32,7 @@ Ext.define('Refs.view.Blob', {
 		        })
 		    ],
 			tbar: me.initToolbar(),
+			tools: me.initTools(),
 		});
 		
 		me.callParent();
@@ -205,6 +206,27 @@ Ext.define('Refs.view.Blob', {
 				}
 			}
 		}]
+	},
+
+	initTools: function() {
+		var me = this,
+			tools = [];
+
+		tools = [{
+			type: 'restore',
+		    tooltip: 'Синхронизировать справочник',
+		    handler: function(event, toolEl, panelHeader) {
+		    	Ext.Ajax.request({
+		    		url: location.href + '&cmd=sync',
+		    		method: "POST",
+		    		success: function() {
+		    			Ext.Msg.alert("Готово", 'Справочник синхронизирован');
+		    		}
+		    	});
+		    }
+		}];
+
+		return tools;
 	}
 	
 });
