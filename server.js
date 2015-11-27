@@ -51,8 +51,8 @@ app.get("/", function(req, res, next) {
 		}
 		res.render('main', {layout: 'main'});		
 	} else {
-		res.send('не задан параметр ref');	
-		res.end();
+		res.writeHead(502);	
+		res.end('не задан параметр ref');
 	}
 });
 
@@ -74,7 +74,7 @@ app.post("/", function(req, res, next) {
 			res.end('не задан параметр cmd');
 		}
 	} else {
-		res.status(502);
+		res.writeHead(502);
 		res.end('не задан параметр ref');
 	}
 });
