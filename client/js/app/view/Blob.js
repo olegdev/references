@@ -60,16 +60,6 @@ Ext.define('Refs.view.Blob', {
 					break;
 				case 'list':
 					field.type = "auto";
-					field.convert = (function(scheme) {
-						return function(v) {
-							scheme.list.forEach(function(item) {
-								if (item.id == v) {
-									v = item.name;
-								}
-							});
-							return v;
-						}
-					}(scheme[key]));
 					break;
 				case 'form':
 					field.type = "auto";					
@@ -121,6 +111,19 @@ Ext.define('Refs.view.Blob', {
 				text: scheme[key].title,
 				dataIndex: key,
 			};			
+
+			if (scheme[key].type == 'list') {
+				column.renderer = (function(scheme) {
+					return function(v) {
+						scheme.list.forEach(function(item) {
+							if (item.id == v) {
+								v = item.name;
+							}
+						});
+						return v;
+					}
+				}(scheme[key]))
+			}
 
 			if (scheme[key].type == 'form') {
 				column.renderer = function() {
